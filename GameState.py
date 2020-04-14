@@ -8,7 +8,7 @@ class GameState:
         self.playerx = Player('x')
         self.playero = Player('o')
         self.curr_turn = 'x'
-        
+
 
     @staticmethod
     def assign_players():
