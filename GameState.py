@@ -20,5 +20,8 @@ class GameState:
             ### Prompt Collapse from board
         else:
             ### Prompt regular turn
-    
+
+    def get_succesor(self):
+        #TODO: Returns the succesor of the current game state
+        return
 
