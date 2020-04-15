@@ -1,14 +1,13 @@
 from Board import QBoard
-from Player import Player
 
 class GameState:
 
     def __init__(self):
         self.board = QBoard()
-        self.playerx = Player('x') # 'x'
-        self.playero = Player('o') # 'o'
+        self.playerx = 'x'
+        self.playero = 'o'
 
-
+    def __init__(self, board, ):
 
     @staticmethod
     def assign_players():
