@@ -31,7 +31,7 @@ class QBoard:
 
     def all_same(self, loc_list):
         contents = {self.measured[loc] if loc in self.measured else -1 for loc_list}
-        if -1 in set:
+        if -1 in contents:
             return False
         elif len(contents) == 1:
             return contents.pop()
