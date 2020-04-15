@@ -24,16 +24,17 @@ class QBoard:
                 [3, 5, 7]]
 
         for win_comb in wins:
-            if self.all_same(win_comb):
-                return True
+            result = self.all_same(win_comb)
+            if result:
+                return result
         return False
 
     def all_same(self, loc_list):
-        contents = {self.measured[loc] if loc in self.measured else -1}
+        contents = {self.measured[loc] if loc in self.measured else -1 for loc_list}
         if -1 in set:
             return False
         elif len(contents) == 1:
-            return True
+            return contents.pop()
         else:
             return False
 
