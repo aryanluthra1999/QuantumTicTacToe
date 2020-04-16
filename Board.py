@@ -42,12 +42,16 @@ class QBoard:
         assert type == "collapse" or type == "place"
         if type == "place":
             self.place_move(*args)
+        else:
+            self.collapse(*args)
+        
+        self.detect_cycle()
+        if not self.cycle:
+
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
             if self.curr_turn == 'o':
                 self.curr_turn = 'x'
-        else:
-            self.collapse(*args)
 
     def place_move(self, loc1, loc2):
         assert not self.is_win(), "Game already won"
@@ -66,6 +70,12 @@ class QBoard:
         assert self.cycle
         # TODO: implement collapse dynamics
         self.measured[loc] = target_player
+
+        for loc in self.measured:
+            if loc in self.graph.nodes:
+                self.graph.remove_node(loc)
+
+        self.detect_cycle()
 
     def detect_cycle(self):
         try:
