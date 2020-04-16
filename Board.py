@@ -42,13 +42,12 @@ class QBoard:
         assert type == "collapse" or type == "place"
         if type == "place":
             self.place_move(*args)
+            if self.curr_turn == 'x':
+                self.curr_turn = 'o'
+            if self.curr_turn == 'o':
+                self.curr_turn = 'x'
         else:
             self.collapse(*args)
-
-        if self.curr_turn == 'x':
-            self.curr_turn = 'o'
-        if self.curr_turn == 'o':
-            self.curr_turn = 'x'
 
     def place_move(self, loc1, loc2):
         assert not self.is_win(), "Game already won"
