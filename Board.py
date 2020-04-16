@@ -41,9 +41,9 @@ class QBoard:
     def make_move(self, type, *args):
         assert type == "collapse" or type == "place"
         if type == "place":
-            self.place_move(args)
+            self.place_move(*args)
         else:
-            self.collapse(args)
+            self.collapse(*args)
 
         if self.curr_turn == 'x':
             self.curr_turn = 'o'
