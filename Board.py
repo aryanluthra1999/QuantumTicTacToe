@@ -9,7 +9,7 @@ class QBoard:
         self.graph = nx.Graph()
         self.graph.add_nodes_from(range(1, 10))
         self.cycle = False
-        self.curr_turn = 'x'
+        self.curr_turn = ['x']
 
     def is_win(self):
         wins = [[1, 2, 3],
@@ -44,12 +44,12 @@ class QBoard:
             self.place_move(*args)
         else:
             self.collapse(*args)
-        
+
         self.detect_cycle()
         if not self.cycle:
-
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
+                print(self.curr_turn)
             if self.curr_turn == 'o':
                 self.curr_turn = 'x'
 
