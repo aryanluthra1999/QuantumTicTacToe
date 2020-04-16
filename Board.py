@@ -81,7 +81,7 @@ class QBoard:
         try:
             self.cycle = nx.find_cycle(self.graph)
         except nx.NetworkXNoCycle:
-            return None
+            self.cycle = None
 
     def visualize_entanglement_graph(self):
         # TODO: implement networkx visualization for self.graph
