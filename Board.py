@@ -30,7 +30,7 @@ class QBoard:
         return False
 
     def all_same(self, loc_list):
-        contents = {self.measured[loc] if loc in self.measured else -1 for loc_list}
+        contents = {self.measured[loc] if loc in self.measured else -1 for loc in loc_list}
         if -1 in contents:
             return False
         elif len(contents) == 1:
@@ -45,18 +45,23 @@ class QBoard:
         else:
             self.collapse(args)
 
-    def place_move(self, player, loc1, loc2):
+        if self.curr_turn == 'x':
+            self.curr_turn = 'o'
+        if self.curr_turn == 'o':
+            self.curr_turn = 'x'
+
+    def place_move(self, loc1, loc2):
         assert not self.is_win(), "Game already won"
-        assert player == 'x' or player == 'o', "not valid symbol for player"
+        assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
         assert (loc1 not in self.measured) and 1 <= loc1 <= 9, "location to play not on the board"
         assert (loc2 not in self.measured) and 1 <= loc2 <= 9, "location to play not on the board"
         assert not self.cycle
         self.moves += 1
-        self.cells[loc1 - 1].add(player + str(self.moves))
-        self.cells[loc2 - 1].add(player + str(self.moves))
+        self.cells[loc1 - 1].add(str(self.curr_turn) + str(self.moves))
+        self.cells[loc2 - 1].add(str(self.curr_turn) + str(self.moves))
         self.graph.add_edge(loc1, loc2)
 
-    def collapse(self, player, loc, target_player, move_num):
+    def collapse(self, loc, target_player, move_num):
         assert target_player + str(move_num) in self.cells[loc - 1]
         assert loc not in self.measured
         assert self.cycle

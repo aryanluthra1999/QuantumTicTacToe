@@ -15,9 +15,11 @@ class GameState:
 
     def next_turn(self):
         if QBoard.cycle:
-        ### Prompt Collapse from board
+            ### Prompt Collapse from board
+            pass
         else:
-
+            ### Prompt New Turn from user and how it will be placed
+            pass
     ### Prompt regular turn
 
     def get_succesor(self):
