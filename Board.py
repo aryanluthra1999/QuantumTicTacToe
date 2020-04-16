@@ -70,16 +70,22 @@ class QBoard:
         self.cells[loc2 - 1].add(str(self.curr_turn) + str(self.moves))
         self.graph.add_edge(loc1, loc2)
 
-    def collapse(self, loc, target_player, move_num):
-        assert target_player + str(move_num) in self.cells[loc - 1]
+    def collapse(self, loc, move_str):
+        assert move_str in self.cells[loc - 1]
         assert loc not in self.measured
         assert self.cycle
+        self.measured[loc] = move_str[0]
+
         # TODO: implement collapse dynamics
-        self.measured[loc] = target_player
 
         for loc in self.measured:
             if loc in self.graph.nodes:
                 self.graph.remove_node(loc)
+                self.cells[loc-1] = set()
+
+        for cell in self.cells:
+            if move_str in cell:
+                cell.remove(move_str)
 
         self.detect_cycle()
 
