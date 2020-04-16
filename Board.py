@@ -83,9 +83,12 @@ class QBoard:
 
         self.detect_cycle()
 
-    def detect_cycle(self):
+    def detect_cycle(self, label=None):
         try:
             self.cycle = nx.find_cycle(self.graph)
+            if label:
+                label.configure(text="You will now have to collapse the system"
+                + " enter the item u want to measure and click the block")
         except nx.NetworkXNoCycle:
             self.cycle = None
 
