@@ -1,15 +1,17 @@
 import networkx as nx
+import random
 
 
 class QBoard:
     def __init__(self):
+        self.check = random.randint(1, 1000)
         self.cells = [set() for i in range(9)]
         self.measured = dict()
         self.moves = 0
         self.graph = nx.Graph()
         self.graph.add_nodes_from(range(1, 10))
-        self.cycle = False
-        self.curr_turn = ['x']
+        self.cycle = None
+        self.curr_turn = 'x'
 
     def is_win(self):
         wins = [[1, 2, 3],
@@ -39,6 +41,7 @@ class QBoard:
             return False
 
     def make_move(self, type, *args):
+        print(self)
         assert type == "collapse" or type == "place"
         if type == "place":
             self.place_move(*args)
@@ -49,9 +52,12 @@ class QBoard:
         if not self.cycle:
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
-                print(self.curr_turn)
-            if self.curr_turn == 'o':
+                print("Switching Turns")
+            elif self.curr_turn == 'o':
                 self.curr_turn = 'x'
+                print("Switching Turns")
+            else:
+                assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
 
     def place_move(self, loc1, loc2):
         assert not self.is_win(), "Game already won"
@@ -86,3 +92,10 @@ class QBoard:
     def visualize_entanglement_graph(self):
         # TODO: implement networkx visualization for self.graph
         return
+
+    def __str__(self):
+        result = "### THE CURRENT BOARD ### \n"
+        result += str(self.check)
+        result += "CURRENT TURN: " + str(self.curr_turn)
+        result += "MEASURED SQUARES: " + str(self.measured)
+        return result
