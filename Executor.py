@@ -7,30 +7,32 @@ def change_button(number):
     tiles[number].configure(text=", ".join(state.board.cells[number]))
 
 def changeGameState(pressedButtonNumber):
-        global last_move
-        print(f"last move {last_move} and curr {pressedButtonNumber}")
-        won = False #state.board.is_win()
-        if state.board.cycle and not won:
-            # Collapse
-            nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
-            if pressedButtonNumber + 1 in nodes:
-                pass
-            last_move = None
-        elif not won:
-            # Add state
-            if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
-                try:
-                    state.board.make_move("place", last_move + 1, pressedButtonNumber + 1)
-                    change_button(last_move)
-                    change_button(pressedButtonNumber)
-                    last_move = None
-                    label.configure(text="Turn Successful")
-                    state.board.detect_cycle(label)
-                except AssertionError as e:
-                    print("an error was raised", e)
-                return
-            last_move = pressedButtonNumber
-            label.configure(text="Select another box to complete turn")
+    if state.board.measured(pressedButtonNumber):
+        return
+    global last_move
+    print(f"last move {last_move} and curr {pressedButtonNumber}")
+    won = False #state.board.is_win()
+    if state.board.cycle and not won:
+        # Collapse
+        nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
+        if pressedButtonNumber + 1 in nodes:
+            pass
+        last_move = None
+    elif not won:
+        # Add state
+        if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
+            try:
+                state.board.make_move("place", last_move + 1, pressedButtonNumber + 1)
+                change_button(last_move)
+                change_button(pressedButtonNumber)
+                last_move = None
+                label.configure(text="Turn Successful")
+                state.board.detect_cycle(label)
+            except AssertionError as e:
+                print("an error was raised", e)
+            return
+        last_move = pressedButtonNumber
+        label.configure(text="Select another box to complete turn")
 
 
 if __name__ == '__main__':
