@@ -123,6 +123,7 @@ class QBoard:
     def __str__(self):
         result = "### THE CURRENT BOARD ### \n"
         result += str(self.check)
-        result += "CURRENT TURN: " + str(self.curr_turn)
-        result += "MEASURED SQUARES: " + str(self.measured)
+        result += "\n CURRENT TURN: " + str(self.curr_turn)
+        result += "\n MEASURED SQUARES: " + str(self.measured)
+        result += "\n CYCLE" + str(self.cycle)
         return result
