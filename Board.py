@@ -66,7 +66,6 @@ class QBoard:
         assert (loc1 not in self.measured) and 1 <= loc1 <= 9, "location to play not on the board"
         assert (loc2 not in self.measured) and 1 <= loc2 <= 9, "location to play not on the board"
         assert self.cycle is None
-        assert loc1 not in self.cycle.nodes and loc2 not in self.cycle.nodes
 
         self.moves += 1
         move_str = str(self.curr_turn) + str(self.moves)
@@ -99,9 +98,9 @@ class QBoard:
 
         self.measured[loc] = move_str[0].upper()
         # TODO: implement collapse dynamics
-        self.cells[loc].remove(move_str)
+        self.cells[loc-1].remove(move_str)
 
-        for other_move in self.cells[loc]:
+        for other_move in self.cells[loc-1]:
             if other_move == move_str or other_move in self.measured.values():
                 continue
             for other_loc in self.move_locs[other_move]:
