@@ -3,25 +3,28 @@ import tkinter as tk
 import networkx as nx
 
 def change_button(number):
-    print("changing state with ", number)
-    tiles[number].configure(text=", ".join(state.board.cells[number]))
+    if not number + 1 in state.board.measured.keys():
+        tiles[number].configure(text=", ".join(state.board.cells[number]))
+    else:
+        tiles[number].configure(text=state.board.measured[number + 1])
 
 def changeGameState(pressedButtonNumber):
     if pressedButtonNumber in state.board.measured.keys():
         return
     global last_move
-    print(f"last move {last_move} and curr {pressedButtonNumber}")
-    won = False #state.board.is_win()
+    won = state.board.is_win()
     if state.board.cycle and not won:
         # Collapse
+        print("collapsing")
         nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
         last_move = None
         if pressedButtonNumber + 1 in nodes:
-            state.board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
-            # try:
-            #     state.board.collapse(pressedButtonNumber + 1, collapse.get())
-            # except:
-            #     label.configure(text="Invalid input")
+            try:
+                state.board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
+            except:
+                label.configure(text="Invalid input")
+            for i in range(9):
+                change_button(i)
     elif not won:
         # Add state
         if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
@@ -37,7 +40,8 @@ def changeGameState(pressedButtonNumber):
             return
         last_move = pressedButtonNumber
         label.configure(text="Select another box to complete turn")
-
+    else:
+        label.configure(text=f"{won} won")
 
 if __name__ == '__main__':
     display = tk.Tk()
