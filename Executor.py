@@ -9,7 +9,7 @@ def change_button(number):
         tiles[number].configure(text=state.board.measured[number + 1])
 
 def changeGameState(pressedButtonNumber):
-    if pressedButtonNumber in state.board.measured.keys():
+    if pressedButtonNumber + 1 in state.board.measured.keys():
         return
     global last_move
     won = state.board.is_win()
@@ -27,6 +27,7 @@ def changeGameState(pressedButtonNumber):
                 change_button(i)
     elif not won:
         # Add state
+        print("We are registering place move")
         if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
             try:
                 state.board.make_move("place", last_move + 1, pressedButtonNumber + 1)
@@ -34,7 +35,7 @@ def changeGameState(pressedButtonNumber):
                 change_button(pressedButtonNumber)
                 last_move = None
                 label.configure(text="Turn Successful")
-                state.board.detect_cycle(label)
+                state.board.detect_cycle(label=label)
             except AssertionError as e:
                 print("an error was raised", e)
             return
@@ -42,6 +43,7 @@ def changeGameState(pressedButtonNumber):
         label.configure(text="Select another box to complete turn")
     else:
         label.configure(text=f"{won} won")
+    print(state.board)
 
 if __name__ == '__main__':
     display = tk.Tk()
