@@ -126,4 +126,5 @@ class QBoard:
         result += "\n CURRENT TURN: " + str(self.curr_turn)
         result += "\n MEASURED SQUARES: " + str(self.measured)
         result += "\n CYCLE" + str(self.cycle)
+        result += "\n CELLS" + str([str(c) for c in self.cells])
         return result
