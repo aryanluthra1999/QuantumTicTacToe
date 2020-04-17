@@ -66,7 +66,6 @@ class QBoard:
         assert (loc1 not in self.measured) and 1 <= loc1 <= 9, "location to play not on the board"
         assert (loc2 not in self.measured) and 1 <= loc2 <= 9, "location to play not on the board"
         assert self.cycle is None
-        assert loc1 not in self.cycle.nodes and loc2 not in self.cycle.nodes
 
         self.moves += 1
         move_str = str(self.curr_turn) + str(self.moves)
@@ -75,11 +74,11 @@ class QBoard:
         self.graph.add_edge(loc1, loc2)
         self.move_locs[move_str] = (loc1, loc2)
 
-    def collapse(self, loc, move_str):
+    def collapse(self, loc, move_str, nodes):
         assert move_str in self.cells[loc - 1]
         assert loc not in self.measured
-        assert loc in self.cycle.nodes
-        assert self.move_locs[move_str][0] in self.cycle.nodes and self.move_locs[move_str][1] in self.cycle.nodes
+        assert loc in nodes
+        assert self.move_locs[move_str][0] in nodes and self.move_locs[move_str][1] in nodes
         assert self.cycle
 
         self.collapse_helper(loc, move_str)
@@ -112,8 +111,6 @@ class QBoard:
         try:
             self.cycle = nx.find_cycle(self.graph)
             if label:
-                label.configure(text="You will now have to collapse the system"
-                                     + " enter the item u want to measure and click the block")
         except nx.NetworkXNoCycle:
             self.cycle = None
 

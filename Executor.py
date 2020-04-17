@@ -7,17 +7,21 @@ def change_button(number):
     tiles[number].configure(text=", ".join(state.board.cells[number]))
 
 def changeGameState(pressedButtonNumber):
-    if state.board.measured(pressedButtonNumber):
-        return
     global last_move
     print(f"last move {last_move} and curr {pressedButtonNumber}")
     won = False #state.board.is_win()
     if state.board.cycle and not won:
         # Collapse
         nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
-        if pressedButtonNumber + 1 in nodes:
-            pass
         last_move = None
+        if pressedButtonNumber in state.board.measured.keys():
+            return
+        if pressedButtonNumber + 1 in nodes:
+            state.board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
+            # try:
+            #     state.board.collapse(pressedButtonNumber + 1, collapse.get())
+            # except:
+            #     label.configure(text="Invalid input")
     elif not won:
         # Add state
         if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
