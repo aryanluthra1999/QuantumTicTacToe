@@ -65,7 +65,7 @@ class QBoard:
         assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
         assert (loc1 not in self.measured) and 1 <= loc1 <= 9, "location to play not on the board"
         assert (loc2 not in self.measured) and 1 <= loc2 <= 9, "location to play not on the board"
-        assert not self.cycle
+        assert self.cycle is None
         assert loc1 not in self.cycle.nodes and loc2 not in self.cycle.nodes
 
         self.moves += 1
