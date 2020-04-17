@@ -98,9 +98,9 @@ class QBoard:
 
         self.measured[loc] = move_str[0].upper()
         # TODO: implement collapse dynamics
-        self.cells[loc-1].remove(move_str)
+        self.cells[loc].remove(move_str)
 
-        for other_move in self.cells[loc-1]:
+        for other_move in self.cells[loc]:
             if other_move == move_str or other_move in self.measured.values():
                 continue
             for other_loc in self.move_locs[other_move]:
@@ -111,6 +111,8 @@ class QBoard:
         try:
             self.cycle = nx.find_cycle(self.graph)
             if label:
+                label.configure(text="You will now have to collapse the system"
+                                     + " \n enter the item u want to measure and click the block")
         except nx.NetworkXNoCycle:
             self.cycle = None
 

@@ -7,6 +7,8 @@ def change_button(number):
     tiles[number].configure(text=", ".join(state.board.cells[number]))
 
 def changeGameState(pressedButtonNumber):
+    if pressedButtonNumber in state.board.measured.keys():
+        return
     global last_move
     print(f"last move {last_move} and curr {pressedButtonNumber}")
     won = False #state.board.is_win()
@@ -14,8 +16,6 @@ def changeGameState(pressedButtonNumber):
         # Collapse
         nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
         last_move = None
-        if pressedButtonNumber in state.board.measured.keys():
-            return
         if pressedButtonNumber + 1 in nodes:
             state.board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
             # try:
