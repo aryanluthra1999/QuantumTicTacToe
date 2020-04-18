@@ -1,6 +1,8 @@
 from Board import QBoard
 import tkinter as tk
-
+import matplotlib.pyplot as plt
+import networkx as nx
+import matplotlib
 
 def change_button(number):
     if not number + 1 in board.measured.keys():
@@ -45,10 +47,13 @@ def changeGameState(pressedButtonNumber):
     else:
         label.configure(text=f"{won} won")
     print(board)
+    nx.draw(board.graph)
+    plt.show()
 
 
 if __name__ == '__main__':
     display = tk.Tk()
+    matplotlib.use('TkAgg')
     display.title("Quantum Tic Tac Toe")
     display.grid()
     tiles = []
@@ -63,4 +68,5 @@ if __name__ == '__main__':
     collapse.grid(row=4, columnspan=3)
     board = QBoard()
     last_move = None
+
     display.mainloop()
