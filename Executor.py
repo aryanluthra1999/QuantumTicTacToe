@@ -1,26 +1,27 @@
-from GameState import GameState
+from Board import QBoard
 import tkinter as tk
-import networkx as nx
+
 
 def change_button(number):
-    if not number + 1 in state.board.measured.keys():
-        tiles[number].configure(text=", ".join(state.board.cells[number]))
+    if not number + 1 in board.measured.keys():
+        tiles[number].configure(text=", ".join(board.cells[number]))
     else:
-        tiles[number].configure(text=state.board.measured[number + 1])
+        tiles[number].configure(text=board.measured[number + 1])
+
 
 def changeGameState(pressedButtonNumber):
-    if pressedButtonNumber + 1 in state.board.measured.keys():
+    if pressedButtonNumber + 1 in board.measured.keys():
         return
     global last_move
-    won = state.board.is_win()
-    if state.board.cycle and not won:
+    won = board.is_win()
+    if board.cycle and not won:
         # Collapse
         print("collapsing")
-        nodes = set([i[0] for i in state.board.cycle] + [i[1] for i in state.board.cycle])
+        nodes = set([i[0] for i in board.cycle] + [i[1] for i in board.cycle])
         last_move = None
         if pressedButtonNumber + 1 in nodes:
             try:
-                state.board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
+                board.collapse(pressedButtonNumber + 1, collapse.get(), nodes)
             except:
                 label.configure(text="Invalid input")
             for i in range(9):
@@ -28,14 +29,14 @@ def changeGameState(pressedButtonNumber):
     elif not won:
         # Add state
         print("We are registering place move")
-        if last_move and last_move != pressedButtonNumber: #otherwise we need to wait for another turn.
+        if last_move and last_move != pressedButtonNumber:  # otherwise we need to wait for another turn.
             try:
-                state.board.make_move("place", last_move + 1, pressedButtonNumber + 1)
+                board.make_move("place", last_move + 1, pressedButtonNumber + 1)
                 change_button(last_move)
                 change_button(pressedButtonNumber)
                 last_move = None
                 label.configure(text="Turn Successful")
-                state.board.detect_cycle(label=label)
+                board.detect_cycle(label=label)
             except AssertionError as e:
                 print("an error was raised", e)
             return
@@ -43,7 +44,8 @@ def changeGameState(pressedButtonNumber):
         label.configure(text="Select another box to complete turn")
     else:
         label.configure(text=f"{won} won")
-    print(state.board)
+    print(board)
+
 
 if __name__ == '__main__':
     display = tk.Tk()
@@ -51,14 +53,14 @@ if __name__ == '__main__':
     display.grid()
     tiles = []
     for tile_number in range(9):
-        curr_btn = tk.Button(display, text="", width="20",height="5", border="2",
-        command=lambda tile_number = tile_number: changeGameState(tile_number))
-        curr_btn.grid(row=tile_number//3, column=tile_number%3)
+        curr_btn = tk.Button(display, text="", width="20", height="5", border="2",
+                             command=lambda tile_number=tile_number: changeGameState(tile_number))
+        curr_btn.grid(row=tile_number // 3, column=tile_number % 3)
         tiles.append(curr_btn)
     label = tk.Label(master=display, text="")
-    label.grid(row=3, columnspan = 3)
+    label.grid(row=3, columnspan=3)
     collapse = tk.Entry(master=display)
     collapse.grid(row=4, columnspan=3)
-    state = GameState()
+    board = QBoard()
     last_move = None
     display.mainloop()

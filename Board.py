@@ -98,9 +98,9 @@ class QBoard:
 
         self.measured[loc] = move_str[0].upper()
         # TODO: implement collapse dynamics
-        self.cells[loc-1].remove(move_str)
+        self.cells[loc - 1].remove(move_str)
 
-        for other_move in self.cells[loc-1]:
+        for other_move in self.cells[loc - 1]:
             if other_move == move_str or other_move in self.measured.values():
                 continue
             for other_loc in self.move_locs[other_move]:
@@ -124,3 +124,18 @@ class QBoard:
         result += "\n CYCLE" + str(self.cycle)
         result += "\n CELLS" + str([str(c) for c in self.cells])
         return result
+
+    ##### Part 2: Minimax algorithm ####
+
+    def get_succesors(self):
+        # TODO: Returns the succesor of the current game state
+        pass
+
+    def get_place_succesors(self):
+        # TODO: Helper method of get succesors in order to get all the succersor when the turn is a place turn
+        pass
+
+    def get_collapse_succesors(self):
+        # TODO Helper method to get succesors for the collapse turns
+        pass
+
