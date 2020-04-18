@@ -180,7 +180,7 @@ class QBoard:
         return successors
 
     @staticmethod
-    def utility(board: QBoard):
+    def utility(board):
         winner = board.is_win()
         if winner == 'x':
             return 100
