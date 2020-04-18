@@ -77,6 +77,8 @@ class QBoard:
         self.graph.add_edge(loc1, loc2)
         self.move_locs[move_str] = (loc1, loc2)
 
+        self.detect_cycle()
+
     def collapse(self, loc, move_str, nodes):
         assert move_str in self.cells[loc - 1]
         assert loc not in self.measured
