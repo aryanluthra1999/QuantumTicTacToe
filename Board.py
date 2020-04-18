@@ -126,6 +126,7 @@ class QBoard:
         result += "\n MEASURED SQUARES: " + str(self.measured)
         result += "\n CYCLE" + str(self.cycle)
         result += "\n CELLS" + str([str(c) for c in self.cells])
+        result += "\n NODES: " + str(self.graph.nodes)
         return result
 
     def duplicate(self):
@@ -155,5 +156,5 @@ class QBoard:
 
     def get_collapse_succesors(self):
         # TODO Helper method to get succesors for the collapse turns
-
+        pass
 
