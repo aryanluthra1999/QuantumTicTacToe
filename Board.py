@@ -10,7 +10,7 @@ class QBoard:
         self.cells = [set() for i in range(9)]
         self.measured = dict()
         self.moves = 0
-        self.graph = nx.Graph()
+        self.graph = nx.MultiGraph()
         self.graph.add_nodes_from(range(1, 10))
         self.cycle = None
         self.curr_turn = 'x'
