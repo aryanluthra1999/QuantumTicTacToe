@@ -22,6 +22,14 @@ class GameState:
             pass
     ### Prompt regular turn
 
-    def get_succesor(self):
+    def get_succesors(self):
         # TODO: Returns the succesor of the current game state
-        return
+        pass
+
+    def get_place_succesors(self):
+        # TODO: Helper method of get succesors in order to get all the succersor when the turn is a place turn
+        pass
+
+    def get_collapse_succesors(self):
+
+

@@ -116,10 +116,6 @@ class QBoard:
         except nx.NetworkXNoCycle:
             self.cycle = None
 
-    def visualize_entanglement_graph(self):
-        # TODO: implement networkx visualization for self.graph
-        return
-
     def __str__(self):
         result = "### THE CURRENT BOARD ### \n"
         result += str(self.check)
