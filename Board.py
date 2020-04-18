@@ -1,5 +1,8 @@
 import networkx as nx
 import random
+from itertools import combinations
+from copy import deepcopy
+
 
 
 class QBoard:
@@ -125,17 +128,32 @@ class QBoard:
         result += "\n CELLS" + str([str(c) for c in self.cells])
         return result
 
+    def duplicate(self):
+        return deepcopy(self)
+
     ##### Part 2: Minimax algorithm ####
 
     def get_succesors(self):
         # TODO: Returns the succesor of the current game state
-        pass
+        assert not self.is_win(), "Game already won, No succesors to find"
+        if self.cycle:
+            return self.get_collapse_succesors()
+        else:
+            return self.get_place_succesors()
+
 
     def get_place_succesors(self):
         # TODO: Helper method of get succesors in order to get all the succersor when the turn is a place turn
-        pass
+        open_squares = [i if i not in self.measured.keys() for i in range(1, 10)]
+        possible_moves = combinations(open_squares, 2)
+        succesors = []
+        for move in possible_moves:
+            new_board = self.copy()
+            new_board.make_move(self, 'place', *move)
+            succesors.append(new_board)
+        return succesors
 
     def get_collapse_succesors(self):
         # TODO Helper method to get succesors for the collapse turns
-        pass
+
 
