@@ -60,6 +60,8 @@ class QBoard:
         if not self.cycle:
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
+                if self.alg:
+                    print(self.minimax())
                 print("Switching Turns")
             elif self.curr_turn == 'o':
                 self.curr_turn = 'x'
@@ -199,16 +201,21 @@ class QBoard:
             # TODO: return utility over succesors here
             if depth > 2:
                 return (0, "unknown")
-            max_util = float("-inf")
-            max_util_successor_move = None
+            ret_util = float("-inf")
+            ret_util_successor_move = None
             print(depth)
             for successor_board, successor_move in board.get_succesors():
                 successor_util = 0.75*(QBoard.utility(successor_board, depth + 1)[0])
-                if successor_util > max_util:
-                    max_util = successor_util
-                    max_util_successor_move = successor_move
+                if depth ==1:
+                    if successor_util > ret_util:
+                        ret_util = successor_util
+                        ret_util_successor_move = successor_move
+                if depth == 2:
+                    if successor_util < ret_util:
+                        ret_util = successor_util
+                        ret_util_successor_move = successor_move
 
-            return (max_util, max_util_successor_move)
+            return (ret_util, ret_util_successor_move)
             # return max([utility(succ)-1 for succ,succ_moves in board.get_succesors())]#sub 1 to end game in the least amt moves
 
     def minimax(self):
