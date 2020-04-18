@@ -5,7 +5,7 @@ from copy import deepcopy
 
 
 class QBoard:
-    def __init__(self):
+    def __init__(self, alg=True):
         self.check = random.randint(1, 1000)
         self.cells = [set() for i in range(9)]
         self.measured = dict()
@@ -15,7 +15,7 @@ class QBoard:
         self.cycle = None
         self.curr_turn = 'x'
         self.move_locs = dict()
-
+        self.alg = alg
 
     def is_win(self):
         wins = [[1, 2, 3],
@@ -46,9 +46,9 @@ class QBoard:
         else:
             return False
 
-    def make_move(self, type,*args):
+    def make_move(self, type, *args):
         self.detect_cycle()
-        #print(self)
+        # print(self)
 
         assert type == "collapse" or type == "place"
         if type == "place":
@@ -63,7 +63,8 @@ class QBoard:
                 print("Switching Turns")
             elif self.curr_turn == 'o':
                 self.curr_turn = 'x'
-                self.minimax()
+                if self.alg:
+                    print(self.minimax())
                 print("Switching Turns")
             else:
                 assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
@@ -137,13 +138,15 @@ class QBoard:
         return result
 
     def duplicate(self):
-        return deepcopy(self)
+        newboard = deepcopy(self)
+        newboard.alg = False
+        return newboard
 
     ##### Part 2: Minimax algorithm ####
 
     def get_succesors(self):
         # TODO: Returns the succesor of the current game state
-        assert not self.is_win(), "Game already won, No successors to find"
+        assert not self.is_win(), "Game already won, No successors to find. Won by " + str(self.is_win())
         if self.cycle:
             return self.get_collapse_succesors()
         else:
@@ -157,7 +160,7 @@ class QBoard:
         for move in possible_moves:
             new_board = self.duplicate()
             new_board.make_move('place', *move)
-            succesors.append((new_board,'place '+str(move)))
+            succesors.append((new_board, 'place ' + str(move)))
         return succesors
 
     def get_collapse_succesors(self):
@@ -166,7 +169,7 @@ class QBoard:
         possible_moves = dict()
         for loc in possible_locs:
             curr_loc_collapse_moves = []
-            for move_str in self.cells[loc]:
+            for move_str in self.cells[loc-1]:
                 move_str_locs = self.move_locs[move_str]
                 if move_str_locs[0] in possible_locs and move_str_locs[1] in possible_locs:
                     curr_loc_collapse_moves.append(move_str)
@@ -179,33 +182,35 @@ class QBoard:
             for move_str in moves:
                 new_board = self.duplicate()
                 new_board.make_move("collapse", loc, move_str, possible_locs)
-                successors.append((new_board,"collapse"+str(loc) + str(move_str)))
+                successors.append((new_board, "collapse" + str(loc) + str(move_str)))
         return successors
 
     @staticmethod
-    def utility(board,depth):
+
+    def utility(board, depth):
         winner = board.is_win()
-        if winner == 'x':
-            return (100,"win")
-        elif winner == 'o':
-            return (-100,"loss")
+        if winner == 'X':
+            return (100, "win")
+        elif winner == 'O':
+            return (-100, "loss")
         elif winner == "nobody":
-            return (0,"tie")
+            return (0, "tie")
         else:
             # TODO: return utility over succesors here
-            if depth >10:
-                return (0,"unknown")
+            if depth > 2:
+                return (0, "unknown")
             max_util = float("-inf")
-            max_util_successor_moves = None
+            max_util_successor_move = None
+            print(depth)
             for successor_board, successor_move in board.get_succesors():
-                successor_util = QBoard.utility(successor_board,depth+1)[0]-1
+                successor_util = 0.75*(QBoard.utility(successor_board, depth + 1)[0])
                 if successor_util > max_util:
                     max_util = successor_util
-                    max_util_successor_move = sucessor_board_move
+                    max_util_successor_move = successor_move
 
-            return (max_util,max_util_successor_move)
-            #return max([utility(succ)-1 for succ,succ_moves in board.get_succesors())]#sub 1 to end game in the least amt moves
+            return (max_util, max_util_successor_move)
+            # return max([utility(succ)-1 for succ,succ_moves in board.get_succesors())]#sub 1 to end game in the least amt moves
 
     def minimax(self):
-        #get successor with the max util
-        return QBoard.utility(self,0)[1]
+        # get successor with the max util
+        return QBoard.utility(self, 0)
