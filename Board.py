@@ -47,10 +47,9 @@ class QBoard:
             return False
 
     def make_move(self, type, *args):
-        self.detect_cycle()
-        # print(self)
 
-        
+        self.detect_cycle()
+        # print(self)    
         
         assert type == "collapse" or type == "place"
         if type == "place":
@@ -59,6 +58,11 @@ class QBoard:
             self.collapse(*args)
 
         self.detect_cycle()
+
+        if self.cycle:
+            if self.alg:
+                print(self.minimax(self.curr_turn))
+
         if not self.cycle:
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
@@ -70,6 +74,7 @@ class QBoard:
                     print(self.minimax())
             else:
                 assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
+
 
     def place_move(self, loc1, loc2):
         assert not self.is_win(), "Game already won"
@@ -188,28 +193,32 @@ class QBoard:
         return successors
 
     @staticmethod
-    def utility(board, depth):
+    def utility(board, player, depth):
         winner = board.is_win()
-        if winner == 'X':
-            return (100, "win")
-        elif winner == 'O':
-            return (-100, "loss")
-        elif winner == "nobody":
-            return (0, "tie")
+        if winner:
+            if winner == "nobody":
+                return (0, "tie")
+            elif winner == player.upper():
+                return (100, player + "win")
+            elif winner != player:
+                return (-100, player + "loss")
         else:
             # TODO: return utility over succesors here
             if depth > 2:
                 return (0, "unknown")
-            ret_util = float("-inf")
+            if depth%2==0:
+                ret_util = float("-inf")
+            if depth%2==1:
+                ret_util = float("inf")
             ret_util_successor_move = None
-            print(depth)
+            #print(depth)
             for successor_board, successor_move in board.get_succesors():
-                successor_util = 0.75 * (QBoard.utility(successor_board, depth + 1)[0])
-                if depth == 1:
+                successor_util = 0.75*(QBoard.utility(successor_board, player, depth + 1)[0])
+                if depth%2==0:
                     if successor_util > ret_util:
                         ret_util = successor_util
                         ret_util_successor_move = successor_move
-                if depth == 2:
+                if depth%2==1:
                     if successor_util < ret_util:
                         ret_util = successor_util
                         ret_util_successor_move = successor_move
@@ -217,7 +226,7 @@ class QBoard:
             return (ret_util, ret_util_successor_move)
             # return max([utility(succ)-1 for succ,succ_moves in board.get_succesors())]#sub 1 to end game in the least amt moves
 
-    def minimax(self):
+    def minimax(self, player):
         # get successor with the max util
         return QBoard.minimax_helper(self, 4, True, float('-inf'), float('inf'))
 
