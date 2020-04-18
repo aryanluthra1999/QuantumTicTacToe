@@ -47,7 +47,7 @@ def changeGameState(pressedButtonNumber):
         label.configure(text="Select another box to complete turn")
     else:
         label.configure(text=f"{won} won")
-    print(board)
+    #print(board)
     time.sleep(0.01)
     plt.clf()
     plt.pause(0.001)
