@@ -33,7 +33,7 @@ class QBoard:
             if result:
                 return result
         if len(self.measured) == 9:
-            return "draw"
+            return "nobody"
         return False
 
     def all_same(self, loc_list):
@@ -186,8 +186,8 @@ class QBoard:
             return 100
         elif winner == 'o':
             return -100
-        elif winner == "draw":
+        elif winner == "nobody":
             return 0
         else:
             # TODO: return utility over succesors here
-            return
+            return ### something here
