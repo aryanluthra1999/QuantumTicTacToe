@@ -4,7 +4,6 @@ from itertools import combinations
 from copy import deepcopy
 
 
-
 class QBoard:
     def __init__(self):
         self.check = random.randint(1, 1000)
@@ -33,6 +32,8 @@ class QBoard:
             result = self.all_same(win_comb)
             if result:
                 return result
+        if len(self.measured) == 9:
+            return "draw"
         return False
 
     def all_same(self, loc_list):
@@ -145,7 +146,6 @@ class QBoard:
         else:
             return self.get_place_succesors()
 
-
     def get_place_succesors(self):
         # TODO: Helper method of get succesors in order to get all the succersor when the turn is a place turn
         open_squares = [i for i in range(1, 10) if i not in self.measured.keys()]
@@ -153,11 +153,41 @@ class QBoard:
         succesors = []
         for move in possible_moves:
             new_board = self.copy()
-            new_board.make_move(self, 'place', *move)
+            new_board.make_move('place', *move)
             succesors.append(new_board)
         return succesors
 
     def get_collapse_succesors(self):
         # TODO Helper method to get succesors for the collapse turns
-        pass
+        possible_locs = set([i[0] for i in board.cycle] + [i[1] for i in board.cycle])
+        possible_moves = dict()
+        for loc in possible_locs:
+            curr_loc_collapse_moves = []
+            for move_str in self.cells[loc]:
+                move_str_locs = self.move_locs[move_str]
+                if move_str_locs[0] in possible_locs and move_str_locs[1] in possible_locs:
+                    curr_loc_collapse_moves.append(move_str)
 
+            possible_moves[loc] = curr_loc_collapse_moves
+
+        # Now adding coppies of the boards as the successors using the possible moves
+        successors = []
+        for loc, moves in possible_moves.items():
+            for move_str in moves:
+                new_board = self.copy()
+                new_board.make_move("collapse", loc, move_str)
+                successors.append(new_board)
+        return successors
+
+    @staticmethod
+    def utility(board: QBoard):
+        winner = board.is_win()
+        if winner == 'x':
+            return 100
+        elif winner == 'o':
+            return -100
+        elif winner == "draw":
+            return 0
+        else:
+            # TODO: return utility over succesors here
+            return
