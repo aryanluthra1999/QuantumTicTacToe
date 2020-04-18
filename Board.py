@@ -59,10 +59,6 @@ class QBoard:
 
         self.detect_cycle()
 
-        if self.cycle:
-            if self.alg:
-                print(self.minimax(self.curr_turn))
-
         if not self.cycle:
             if self.curr_turn == 'x':
                 self.curr_turn = 'o'
@@ -74,6 +70,9 @@ class QBoard:
                     print(self.minimax())
             else:
                 assert self.curr_turn == 'x' or self.curr_turn == 'o', "not valid symbol for player"
+        else:
+            if self.curr_turn == 'x' and self.alg:
+                print(self.minimax())
 
 
     def place_move(self, loc1, loc2):
@@ -226,7 +225,7 @@ class QBoard:
             return (ret_util, ret_util_successor_move)
             # return max([utility(succ)-1 for succ,succ_moves in board.get_succesors())]#sub 1 to end game in the least amt moves
 
-    def minimax(self, player):
+    def minimax(self):
         # get successor with the max util
         return QBoard.minimax_helper(self, 4, True, float('-inf'), float('inf'))
 
