@@ -111,6 +111,15 @@ class QBoard:
 
         self.detect_cycle()
 
+        if self.curr_turn == 'x':
+            self.curr_turn = 'o'
+            # print("Switching Turns")
+        elif self.curr_turn == 'o':
+            self.curr_turn = 'x'
+            # print("Switching Turns")
+            if self.alg:
+                print(self.minimax())
+
     def collapse_helper(self, loc, move_str):
 
         self.measured[loc] = move_str[0].upper()
@@ -264,7 +273,7 @@ class QBoard:
             bestVal = float('-inf')
             bestMove = None
             for successor_board, successor_move in board.get_succesors():
-                value = QBoard.minimax_helper(successor_board, depth - 1, False, alpha, beta)[0]
+                value = QBoard.minimax_helper(successor_board, depth - 1, successor_board.curr_turn == 'x', alpha, beta)[0]
                 if value > bestVal:
                     bestVal = value
                     bestMove = successor_move
@@ -277,7 +286,7 @@ class QBoard:
             bestVal = float('inf')
             bestMove = None
             for successor_board, successor_move in board.get_succesors():
-                value = QBoard.minimax_helper(successor_board, depth - 1, True, alpha, beta)[0]
+                value = QBoard.minimax_helper(successor_board, depth - 1, successor_board.curr_turn == 'x', alpha, beta)[0]
                 if value < bestVal:
                     bestVal = value
                     bestMove = successor_move

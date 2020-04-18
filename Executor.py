@@ -70,6 +70,8 @@ if __name__ == '__main__':
     collapse = tk.Entry(master=display)
     collapse.grid(row=4, columnspan=3)
     board = QBoard()
+    # if board.alg:
+    #    board.minimax()
     last_move = None
 
     display.mainloop()
