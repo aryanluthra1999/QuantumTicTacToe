@@ -3,6 +3,7 @@ import tkinter as tk
 import matplotlib.pyplot as plt
 import networkx as nx
 import matplotlib
+import time
 
 def change_button(number):
     if not number + 1 in board.measured.keys():
@@ -47,6 +48,7 @@ def changeGameState(pressedButtonNumber):
     else:
         label.configure(text=f"{won} won")
     print(board)
+    time.sleep(0.01)
     plt.clf()
     plt.pause(0.001)
     nx.draw(board.graph)
