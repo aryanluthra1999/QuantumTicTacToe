@@ -144,7 +144,7 @@ class QBoard:
 
     def get_place_succesors(self):
         # TODO: Helper method of get succesors in order to get all the succersor when the turn is a place turn
-        open_squares = [i if i not in self.measured.keys() for i in range(1, 10)]
+        open_squares = [i for i in range(1, 10) if i not in self.measured.keys()]
         possible_moves = combinations(open_squares, 2)
         succesors = []
         for move in possible_moves:
