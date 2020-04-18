@@ -45,6 +45,7 @@ class QBoard:
             return False
 
     def make_move(self, type, *args):
+        self.detect_cycle()
         print(self)
         assert type == "collapse" or type == "place"
         if type == "place":
