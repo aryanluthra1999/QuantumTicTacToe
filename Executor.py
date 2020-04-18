@@ -47,9 +47,10 @@ def changeGameState(pressedButtonNumber):
     else:
         label.configure(text=f"{won} won")
     print(board)
+    plt.clf()
+    plt.pause(0.001)
     nx.draw(board.graph)
     plt.show()
-
 
 if __name__ == '__main__':
     display = tk.Tk()
