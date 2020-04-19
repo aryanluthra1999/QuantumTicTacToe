@@ -69,7 +69,7 @@ if __name__ == '__main__':
     label.grid(row=3, columnspan=3)
     collapse = tk.Entry(master=display)
     collapse.grid(row=4, columnspan=3)
-    board = QBoard()
+    board = QBoard(alg=True)
     # if board.alg:
     #    board.minimax()
     last_move = None
