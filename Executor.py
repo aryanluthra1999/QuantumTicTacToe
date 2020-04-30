@@ -51,7 +51,7 @@ def changeGameState(pressedButtonNumber):
     time.sleep(0.01)
     plt.clf()
     plt.pause(0.001)
-    nx.draw(board.graph)
+    nx.draw(board.graph, with_labels=True)
     plt.show()
 
 if __name__ == '__main__':
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     label.grid(row=3, columnspan=3)
     collapse = tk.Entry(master=display)
     collapse.grid(row=4, columnspan=3)
-    board = QBoard(alg=True)
+    board = QBoard(alg=False)
     # if board.alg:
     #    board.minimax()
     last_move = None
