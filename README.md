@@ -3,3 +3,6 @@ Lets make a basic 2-player Zero Sum Quantum Game and a Minimax Rational Agent AI
 
 
 Install the valid dependencies and run executor.py to play a game
+
+
+Please read the full report in the repository to ensure full understanding
